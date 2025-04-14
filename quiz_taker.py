@@ -38,14 +38,28 @@ def start_quiz(root, course_table, course_name):
         answer_buttons[3].config(text=choice4, value=choice4)
         
         selected_answer.set(None)
-    '''def show_question():
-        selected_answer.set(None)
-        q = questions[current_question_index[0]]
-        question_label.config(text=f"Q{current_question_index[0]+1}: {q[0]}")
-        for i in range(4):
-            answer_buttons[i].config(text=q[i+1], value=q[i+1])'''
-
+    
     def submit_answer():
+        selected = selected_answer.get()
+        if not selected:
+            messagebox.showwarning("No Selection", "Please select an answer.")
+            return
+
+        # Get the correct answer from the database (string form)
+        correct_answer = questions[current_question_index[0]][6]  # Correct answer is stored in index 6
+        print(f"Correct answer: {correct_answer}")
+
+        # Check if the selected answer matches the correct answer
+        if selected == correct_answer:
+            score[0] += 1
+
+        current_question_index[0] += 1
+        if current_question_index[0] < len(questions):
+            show_question()
+        else:
+            messagebox.showinfo("Quiz Completed", f"You scored {score[0]} out of {len(questions)}.")
+            quiz_window.destroy()
+    '''def submit_answer():
         selected = selected_answer.get()
         if not selected:
             messagebox.showwarning("No Selection", "Please select an answer.")
@@ -60,7 +74,7 @@ def start_quiz(root, course_table, course_name):
             show_question()
         else:
             messagebox.showinfo("Quiz Completed", f"You scored {score[0]} out of {len(questions)}.")
-            quiz_window.destroy()
+            quiz_window.destroy()'''
 
     for i in range(4):
         btn = tk.Radiobutton(quiz_window, text="", variable=selected_answer, value="", font=("Arial", 12), anchor="w", justify="left")
