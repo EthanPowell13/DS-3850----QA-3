@@ -1,6 +1,7 @@
 import tkinter as tk
 from database import initialize_database
 from question_editor import open_question_editor
+from quiz_taker import start_quiz
 
 # Initialize the database (ensures tables exist)
 initialize_database()
@@ -29,7 +30,7 @@ def open_quiz_window():
 
     for display_name, table_name in course_list:
         button = tk.Button(quiz_window, text=display_name, width=20, 
-                           command=lambda n=display_name: open_course_window(n))
+                           command=lambda t=table_name, n=display_name: start_quiz(root,t,n))
         button.pack(pady=5)
 
 # Function to open admin window (currently blank)
@@ -50,15 +51,33 @@ def open_admin_window():
 
     for display_name, table_name in course_list:
         button = tk.Button(admin_window, text=display_name, width=20,
-                           command=lambda t=table_name, n=display_name: open_question_editor(t, n))
+                           command=lambda t=table_name, n=display_name: open_question_editor(root, t, n))
         button.pack(pady=5)
 
-# Placeholder for individual course windows
+# Placeholder for individual course windows 
+"""
 def open_course_window(course_name):
     window = tk.Toplevel(root)
     window.title(course_name)
     label = tk.Label(window, text=f"Welcome to {course_name}", font=("Arial", 14))
-    label.pack(padx=20, pady=20)
+    label.pack(padx=20, pady=20)"""
+
+def open_quiz_menu():
+    quiz_window = tk.Toplevel()
+    quiz_window.title("Choose a Quiz")
+
+    classes = {
+        "ds_3850": "DS 3850",
+        "acct_3210": "ACCT 3210",
+        "ds_3540": "DS 3540",
+        "bmgt_4410": "BMGT 4410",
+        "phed_1101": "PHED 1101"
+    }
+
+    for table_name, display_name in classes.items():
+        btn = tk.Button(quiz_window, text=display_name, width=20,
+                        command=lambda t=table_name, n=display_name: start_quiz(root, t, n))
+        btn.pack(pady=5)
 
 # Welcome screen buttons
 tk.Label(root, text="Welcome!", font=("Arial", 16)).pack(pady=20)
